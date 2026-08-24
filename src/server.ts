@@ -5,14 +5,11 @@ import { router } from './adapters/http/routes';
 
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Rotas
 app.use('/api', router);
 
-// Health check (útil para monitoramento)
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });

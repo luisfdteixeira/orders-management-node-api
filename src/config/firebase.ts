@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Constroi as credenciais a partir das variáveis de ambiente
 const serviceAccount = {
   type: 'service_account',
   project_id: process.env.FIREBASE_PROJECT_ID,
@@ -18,7 +17,6 @@ const serviceAccount = {
   client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
 };
 
-// Inicializa o Firebase com as credenciais das variáveis de ambiente
 if (getApps().length === 0) {
   initializeApp({
     credential: cert(serviceAccount as any),

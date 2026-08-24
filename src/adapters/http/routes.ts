@@ -3,10 +3,25 @@ import { AuthController } from './controllers/AuthController';
 import { AuthUseCases } from '../../core/use-cases/AuthUseCases';
 import { FirebaseAuthService } from '../services/FirebaseAuthService';
 import { authenticate } from './middlewares/auth';
+import { authorize } from './middlewares/authorize';
+import { ProductController } from './controllers/ProductController';
+import { ProductUseCases } from '../../core/use-cases/ProductUseCases';
+import { ImgBBImageUploadService } from '../services/ImgBBImageUploadService';
+import { supabaseClient } from '../db/supabase-client';
+import { SupabaseProductRepository } from '../repositories/SupabaseProductRepository';
 
 const router = Router();
 
-// Configurar dependências
+const productRepository = new SupabaseProductRepository(supabaseClient);
+
+const imageUploadService = new ImgBBImageUploadService(
+  process.env.IMGBB_API_KEY as string
+);
+
+const productUseCases = new ProductUseCases(productRepository, imageUploadService);
+
+const productController = new ProductController(productUseCases);
+
 const apiKey = process.env.FIREBASE_API_KEY;
 if (!apiKey) {
   throw new Error('FIREBASE_API_KEY não definida no .env');
@@ -15,12 +30,43 @@ const authService = new FirebaseAuthService(apiKey);
 const authUseCases = new AuthUseCases(authService);
 const authController = new AuthController(authUseCases);
 
-// Rota pública de login
 router.post('/auth/login', (req, res) => authController.login(req, res));
 
-// Rota para obter perfil (protegida - exemplo)
 router.get('/auth/profile', authenticate, (req, res) => {
   res.json({ user: (req as any).user });
 });
+
+router.post(
+  '/products',
+  authenticate,
+  authorize(['admin']),
+  (req, res) => productController.createProduct(req, res)
+);
+
+router.get(
+  '/products',
+  authenticate,
+  (req, res) => productController.listProducts(req, res)
+);
+
+router.get(
+  '/products/:id',
+  authenticate,
+  (req, res) => productController.getProductById(req, res)
+);
+
+router.put(
+  '/products/:id',
+  authenticate,
+  authorize(['admin']),
+  (req, res) => productController.updateProduct(req, res)
+);
+
+router.delete(
+  '/products/:id',
+  authenticate,
+  authorize(['admin']),
+  (req, res) => productController.deleteProduct(req, res)
+);
 
 export { router };

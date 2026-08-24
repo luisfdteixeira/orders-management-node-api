@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { auth } from '../../config/firebase'; // Admin SDK já inicializado
+import { auth } from '../../config/firebase';
 import { IAuthService } from '../../core/ports/services/IAuthService';
 
 export class FirebaseAuthService implements IAuthService {
@@ -10,10 +10,6 @@ export class FirebaseAuthService implements IAuthService {
     this.apiKey = apiKey;
   }
 
-  /**
-   * Método para login com email e senha usando a REST API do Firebase.
-   * Retorna o idToken, refreshToken e dados do usuário.
-   */
   async signInWithEmailAndPassword(email: string, password: string): Promise<{
     idToken: string;
     refreshToken: string;
@@ -37,16 +33,11 @@ export class FirebaseAuthService implements IAuthService {
         localId: response.data.localId,
       };
     } catch (error: any) {
-      // Extrai a mensagem de erro do Firebase
       const errorMessage = error.response?.data?.error?.message || 'Erro ao fazer login';
       throw new Error(errorMessage);
     }
   }
 
-  /**
-   * Método para verificar um token ID usando o Firebase Admin SDK.
-   * Retorna os dados decodificados do usuário.
-   */
   async verifyToken(token: string): Promise<{ uid: string; email?: string; name?: string; role?: string }> {
     try {
       const decodedToken = await auth.verifyIdToken(token);
@@ -55,7 +46,7 @@ export class FirebaseAuthService implements IAuthService {
         uid: decodedToken.uid,
         email: decodedToken.email,
         name: decodedToken.name,
-        role: decodedToken.role || 'user', // Pega custom claims se existirem
+        role: decodedToken.role || 'user',
       };
     } catch (error) {
       console.error('Erro ao verificar token:', error);

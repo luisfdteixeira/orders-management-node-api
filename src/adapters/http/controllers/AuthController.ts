@@ -27,7 +27,6 @@ export class AuthController {
         },
       });
     } catch (error: any) {
-      // Mapeia erros do Firebase para mensagens amigáveis
       const errorMap: Record<string, string> = {
         'EMAIL_NOT_FOUND': 'Usuário não encontrado',
         'INVALID_PASSWORD': 'Senha incorreta',

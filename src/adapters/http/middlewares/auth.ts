@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { auth } from '../../../config/firebase';
 
-// Extensão do tipo Request para incluir o usuário
 export interface AuthRequest extends Request {
   user?: {
     uid: string;
@@ -11,7 +10,6 @@ export interface AuthRequest extends Request {
   };
 }
 
-// Middleware de autenticação
 export const authenticate = async (
   req: AuthRequest,
   res: Response,
@@ -27,10 +25,8 @@ export const authenticate = async (
 
     const idToken = authHeader.split('Bearer ')[1];
     
-    // Verifica o token com o Firebase Admin SDK
     const decodedToken = await auth.verifyIdToken(idToken);
     
-    // Anexa o usuário à requisição
     req.user = {
       uid: decodedToken.uid,
       email: decodedToken.email,
