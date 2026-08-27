@@ -14,9 +14,7 @@ const router = Router();
 
 const productRepository = new SupabaseProductRepository(supabaseClient);
 
-const imageUploadService = new ImgBBImageUploadService(
-  process.env.IMGBB_API_KEY as string
-);
+const imageUploadService = new ImgBBImageUploadService();
 
 const productUseCases = new ProductUseCases(productRepository, imageUploadService);
 
@@ -24,7 +22,7 @@ const productController = new ProductController(productUseCases);
 
 const apiKey = process.env.FIREBASE_API_KEY;
 if (!apiKey) {
-  throw new Error('FIREBASE_API_KEY não definida no .env');
+  throw new Error('FIREBASE_API_KEY not defined in the .env file');
 }
 const authService = new FirebaseAuthService(apiKey);
 const authUseCases = new AuthUseCases(authService);

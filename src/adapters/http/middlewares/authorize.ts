@@ -9,7 +9,7 @@ export const authorize = (allowedRoles: string[]) => {
     }
     const userRole = req.user.role || 'user';
     if (!allowedRoles.includes(userRole)) {
-      res.status(403).json({ error: 'Permissão negada' });
+      res.status(403).json({ error: 'Permission denied' });
       return;
     }
     next();

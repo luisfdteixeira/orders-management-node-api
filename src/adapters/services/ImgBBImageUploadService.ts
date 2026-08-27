@@ -1,11 +1,18 @@
 import { IImageUploadService } from '../../core/ports/services/IImageUploadService';
+import { env } from '../../config/env';
 
 export class ImgBBImageUploadService implements IImageUploadService {
   private readonly apiKey: string;
   private readonly baseUrl = 'https://api.imgbb.com/1';
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
+  constructor() {
+    if (!env.imgbbApiKey) {
+      const errorMessage = 'IMGBB_API_KEY not defined in the .env file';
+      console.log('Error: ' + errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    this.apiKey = env.imgbbApiKey;
   }
 
   async uploadImage(imageData: string | Buffer, filename?: string): Promise<string> {
@@ -20,10 +27,14 @@ export class ImgBBImageUploadService implements IImageUploadService {
         formData.append('name', filename);
       }
 
+      console.log('Uploading image to ImgBB with filename:', filename);
+
       const response = await fetch(
         `${this.baseUrl}/upload?key=${this.apiKey}`,
         { method: 'POST', body: formData }
       );
+
+      console.log('Response of image upload:', response.status, response.statusText);
 
       if (!response.ok) {
         const errorData = await response.json();
