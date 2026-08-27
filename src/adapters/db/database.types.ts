@@ -12,7 +12,7 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.15"
   }
-  "empresa-teste-1": {
+  "public": {
     Tables: {
       products: {
         Row: {
@@ -184,7 +184,7 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  "empresa-teste-1": {
+  "public": {
     Enums: {},
   },
 } as const

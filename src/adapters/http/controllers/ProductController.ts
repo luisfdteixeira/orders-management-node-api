@@ -1,16 +1,20 @@
 import { Response } from 'express';
 import  { ProductUseCases } from '../../../core/use-cases/ProductUseCases';
 import { AuthRequest } from '../middlewares/auth';
+import { CreateProductInput, UpdateProductInput } from '../../../core/dtos/ProductDTO';
 
 export class ProductController {
   constructor(private productUseCases: ProductUseCases) {}
 
-  async createProduct(req: AuthRequest, res: Response): Promise<void> {
+  async createProduct(
+    req: AuthRequest<{}, {}, CreateProductInput>,
+    res: Response
+  ): Promise<void> {
     try {
       const { name, description, price, stock, image_base64 } = req.body;
 
       if (!name || price === undefined || stock === undefined) {
-        res.status(400).json({ error: 'Nome, preço e estoque são obrigatórios' });
+        res.status(400).json({ error: 'Name, price and stock are required' });
         return;
       }
 
@@ -24,7 +28,7 @@ export class ProductController {
       });
 
       res.status(201).json({
-        message: 'Produto criado com sucesso',
+        message: 'Product created successfully',
         product,
       });
     } catch (error: any) {
@@ -41,13 +45,13 @@ export class ProductController {
     }
   }
 
-  async getProductById(req: AuthRequest, res: Response): Promise<void> {
+  async getProductById(req: AuthRequest<{ id: string }>, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
       const product = await this.productUseCases.getProductById(id);
       res.json(product);
     } catch (error: any) {
-      if (error.message === 'Produto não encontrado') {
+      if (error.message === 'Product not found') {
         res.status(404).json({ error: error.message });
       } else {
         res.status(500).json({ error: error.message });
@@ -55,7 +59,7 @@ export class ProductController {
     }
   }
 
-  async updateProduct(req: AuthRequest, res: Response): Promise<void> {
+  async updateProduct(req: AuthRequest<{id: string}, {}, UpdateProductInput>, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
       const { name, description, price, stock, image_base64, is_active } = req.body;
@@ -70,11 +74,11 @@ export class ProductController {
       });
 
       res.json({
-        message: 'Produto atualizado com sucesso',
+        message: 'Product updated successfully',
         product,
       });
     } catch (error: any) {
-      if (error.message === 'Produto não encontrado') {
+      if (error.message === 'Product not found') {
         res.status(404).json({ error: error.message });
       } else {
         res.status(400).json({ error: error.message });
@@ -86,9 +90,9 @@ export class ProductController {
     try {
       const id = req.params.id as string;
       await this.productUseCases.deleteProduct(id);
-      res.json({ message: 'Produto deletado com sucesso' });
+      res.json({ message: 'Product deleted successfully' });
     } catch (error: any) {
-      if (error.message === 'Produto não encontrado') {
+      if (error.message === 'Product not found') {
         res.status(404).json({ error: error.message });
       } else {
         res.status(500).json({ error: error.message });

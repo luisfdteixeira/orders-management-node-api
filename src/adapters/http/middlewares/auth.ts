@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { auth } from '../../../config/firebase';
 
-export interface AuthRequest extends Request {
+export interface AuthRequest<
+  P = any,
+  ResBody = any,
+  ReqBody = any,
+  ReqQuery = any
+> extends Request<P, ResBody, ReqBody, ReqQuery> {
   user?: {
     uid: string;
     email?: string;
@@ -19,7 +24,7 @@ export const authenticate = async (
     const authHeader = req.headers.authorization;
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      res.status(401).json({ error: 'Token de autenticação não fornecido' });
+      res.status(401).json({ error: 'Missing or invalid authentication token' });
       return;
     }
 
@@ -36,7 +41,7 @@ export const authenticate = async (
     
     next();
   } catch (error) {
-    console.error('Erro na autenticação:', error);
-    res.status(401).json({ error: 'Token inválido ou expirado' });
+    console.error('Error during authentication:', error);
+    res.status(401).json({ error: 'Missing or invalid authentication token' });
   }
 };

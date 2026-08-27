@@ -13,7 +13,7 @@ export const supabaseClient: SupabaseClient<Database> = createClient<Database>(
   supabasePublishableKey,
   {
     db: {
-      schema: 'empresa-teste-1',
+      schema: 'public',
     },
   }
 );

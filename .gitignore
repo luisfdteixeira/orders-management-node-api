@@ -141,3 +141,5 @@ vite.config.ts.timestamp-*
 
 #package-lock.json
 package-lock.json
+
+set-user-to-admin.ts

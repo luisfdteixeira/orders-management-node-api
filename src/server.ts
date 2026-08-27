@@ -15,6 +15,6 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(env.port, () => {
-  console.log(`Servidor rodando em http://localhost:${env.port}`);
-  console.log(`Ambiente: ${env.nodeEnv}`);
+  console.log(`Server running at http://localhost:${env.port}`);
+  console.log(`Environment: ${env.nodeEnv}`);
 });

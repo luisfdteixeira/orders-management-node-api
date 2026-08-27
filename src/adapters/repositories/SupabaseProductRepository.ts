@@ -3,9 +3,9 @@ import { IProductRepository } from '../../core/ports/repositories/IProductReposi
 import { Product, CreateProductInput, UpdateProductInput } from '../../core/entities/Product';
 import { Database } from '../db/database.types';
 
-type ProductRow = Database['empresa-teste-1']['Tables']['products']['Row'];
-type ProductInsert = Database['empresa-teste-1']['Tables']['products']['Insert'];
-type ProductUpdate = Database['empresa-teste-1']['Tables']['products']['Update'];
+type ProductRow = Database['public']['Tables']['products']['Row'];
+type ProductInsert = Database['public']['Tables']['products']['Insert'];
+type ProductUpdate = Database['public']['Tables']['products']['Update'];
 
 export class SupabaseProductRepository implements IProductRepository {
   constructor(private supabaseClient: SupabaseClient<Database>) {}
@@ -30,7 +30,7 @@ export class SupabaseProductRepository implements IProductRepository {
       .select('*')
       .eq('is_active', true);
 
-    if (error) throw new Error(`Erro ao listar produtos: ${error.message}`);
+    if (error) throw new Error(`Error listing products: ${error.message}`);
     return (data || []).map(this.mapToDomain);
   }
 
@@ -43,7 +43,7 @@ export class SupabaseProductRepository implements IProductRepository {
 
     if (error) {
       if (error.code === 'PGRST116') return null;
-      throw new Error(`Erro ao buscar produto: ${error.message}`);
+      throw new Error(`Error finding product: ${error.message}`);
     }
     return data ? this.mapToDomain(data) : null;
   }
@@ -58,13 +58,18 @@ export class SupabaseProductRepository implements IProductRepository {
       is_active: data.is_active ?? true,
     };
 
+
+    console.log('Inserting product into the database')
     const { data: created, error } = await this.supabaseClient
       .from('products')
       .insert(insertData)
       .select()
       .single();
 
-    if (error) throw new Error(`Erro ao criar produto: ${error.message}`);
+    if (error) {
+      console.log('Error inserting product into the database');
+      throw new Error(`Error creating product: ${error.message}`);
+    }
     return this.mapToDomain(created);
   }
 
@@ -85,7 +90,7 @@ export class SupabaseProductRepository implements IProductRepository {
       .select()
       .single();
 
-    if (error) throw new Error(`Erro ao atualizar produto: ${error.message}`);
+    if (error) throw new Error(`Error updating product: ${error.message}`);
     return this.mapToDomain(updated);
   }
 
@@ -95,6 +100,6 @@ export class SupabaseProductRepository implements IProductRepository {
       .delete()
       .eq('id', id);
 
-    if (error) throw new Error(`Erro ao deletar produto: ${error.message}`);
+    if (error) throw new Error(`Error deleting product: ${error.message}`);
   }
 }
