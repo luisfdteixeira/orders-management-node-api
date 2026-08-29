@@ -9,10 +9,12 @@ import { ProductUseCases } from '../../core/use-cases/ProductUseCases';
 import { ImgBBImageUploadService } from '../services/ImgBBImageUploadService';
 import { supabaseClient } from '../db/supabase-client';
 import { SupabaseProductRepository } from '../repositories/SupabaseProductRepository';
+import { SupabaseUserRepository } from '../repositories/SupabaseUserRepository';
 
 const router = Router();
 
 const productRepository = new SupabaseProductRepository(supabaseClient);
+const userRepository = new SupabaseUserRepository(supabaseClient);
 
 const imageUploadService = new ImgBBImageUploadService();
 
@@ -25,9 +27,10 @@ if (!apiKey) {
   throw new Error('FIREBASE_API_KEY not defined in the .env file');
 }
 const authService = new FirebaseAuthService(apiKey);
-const authUseCases = new AuthUseCases(authService);
+const authUseCases = new AuthUseCases(authService, userRepository);
 const authController = new AuthController(authUseCases);
 
+router.post('/auth/register', (req, res) => authController.register(req, res));
 router.post('/auth/login', (req, res) => authController.login(req, res));
 
 router.get('/auth/profile', authenticate, (req, res) => {

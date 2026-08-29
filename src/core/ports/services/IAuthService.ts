@@ -5,5 +5,14 @@ export interface IAuthService {
     email: string;
     localId: string;
   }>;
+  createUser(email: string, password: string, name?: string, phone?: string): Promise<{
+    uid: string;
+    localId: string;
+    email: string;
+    name?: string;
+    phone?: string;
+    idToken: string;
+    refreshToken: string;
+  }>;
   verifyToken(token: string): Promise<{ uid: string; email?: string; name?: string; role?: string }>;
 }
