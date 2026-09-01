@@ -7,40 +7,38 @@
   <img src="https://img.shields.io/badge/Firebase-Admin%20SDK-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase">
   <img src="https://img.shields.io/badge/Supabase-3.x-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
   <img src="https://img.shields.io/badge/ImgBB-API-FF6B6B?style=for-the-badge&logo=imgbb&logoColor=white" alt="ImgBB">
-  <img src="https://img.shields.io/badge/Arquitetura-Hexagonal-8A2BE2?style=for-the-badge" alt="Arquitetura Hexagonal">
+  <img src="https://img.shields.io/badge/Architecture-Hexagonal-8A2BE2?style=for-the-badge" alt="Hexagonal Architecture">
 </p>
 
-## Sobre
-API para gestão de pedidos de um restaurante, desenvolvida com Node.js, TypeScript, Firebase Auth e Supabase (PostgreSQL), seguindo os princípios da Arquitetura Hexagonal.
+## About
+API for restaurant order management, built with Node.js, TypeScript, Firebase Auth and Supabase (PostgreSQL), following Hexagonal Architecture principles.
 
-## Pré-requisitos
+## Prerequisites
 - Node.js (v18+)
 - npm
-- Conta no Firebase (para autenticação)
-- Conta no Supabase (banco de dados)
-- Conta no ImgBB (upload de imagens)
+- Firebase account (for authentication)
+- Supabase account (database)
+- ImgBB account (image upload)
 
-## Instalação
-```
-git clone https://github.com/luisfdteixeira/orders-management-node-api
-cd orders-management-api
-npm install
-```
+## Installation
 
-## Script de inicialização
-```
-npm run dev
-```
+    git clone https://github.com/luisfdteixeira/orders-management-node-api
+    cd orders-management-api
+    npm install
 
-## Rotas principais
+## Startup script
 
-| Método | Rota | Descrição | Autenticação |
-|--------|------|-----------|--------------|
-| POST | `/api/auth/login` | Login com email/senha | Pública |
-| GET | `/api/auth/profile` | Perfil do usuário logado | `Bearer token` |
-| GET | `/api/products` | Listar produtos | `Bearer token` |
-| POST | `/api/products` | Criar produto (admin) | `Bearer token` |
-| GET | `/api/products/:id` | Buscar produto por ID | `Bearer token` |
-| PUT | `/api/products/:id` | Atualizar produto (admin) | `Bearer token` |
-| DELETE | `/api/products/:id` | Deletar produto (admin) | `Bearer token` |
-| GET | `/health` | Health check | Pública |
+    npm run dev
+
+## Main routes
+
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| POST | `/api/auth/login` | Login with email/password | Public |
+| GET | `/api/auth/profile` | Get logged user profile | `Bearer token` |
+| GET | `/api/products` | List all products | `Bearer token` |
+| POST | `/api/products` | Create product (admin only) | `Bearer token` |
+| GET | `/api/products/:id` | Get product by ID | `Bearer token` |
+| PUT | `/api/products/:id` | Update product (admin only) | `Bearer token` |
+| DELETE | `/api/products/:id` | Delete product (admin only) | `Bearer token` |
+| GET | `/health` | Health check | Public |
