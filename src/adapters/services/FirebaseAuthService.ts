@@ -63,6 +63,8 @@ export class FirebaseAuthService implements IAuthService {
 
       await auth.setCustomUserClaims(uid, { role: 'user' });
 
+      //adicionar usuário ao banco de dados supabase
+
       return {
         uid,
         localId: uid,

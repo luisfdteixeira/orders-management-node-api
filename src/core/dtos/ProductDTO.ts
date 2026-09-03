@@ -3,6 +3,7 @@ export interface CreateProductInput {
   description?: string;
   price: number;
   stock: number;
+  category_id: string;
   image_base64?: string;
   is_active?: boolean;
 }
@@ -24,6 +25,7 @@ export interface ProductResponse {
   stock: number;
   image_url?: string;
   is_active: boolean;
+  category_id: string;
   created_at: string;
   updated_at: string;
 }

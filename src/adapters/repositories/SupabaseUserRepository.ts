@@ -32,6 +32,8 @@ export class SupabaseUserRepository implements IUserRepository {
       role: data.role || 'user',
     };
 
+    console.log("inserting user in database")
+
     const { data: created, error } = await this.supabaseClient
       .from('users')
       .insert(insertData)

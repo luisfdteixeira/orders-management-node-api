@@ -21,7 +21,7 @@ export class ProductUseCases {
           filename
         );
       } catch (error: any) {
-        throw new Error(`Falha no upload da imagem: ${error.message}`);
+        throw new Error(`Failed to upload image: ${error.message}`);
       }
     }
 
@@ -30,6 +30,7 @@ export class ProductUseCases {
       description: productData.description,
       price: productData.price,
       stock: productData.stock,
+      category_id: productData.category_id,
       image_url: imageUrl,
       is_active: productData.is_active ?? true,
     };

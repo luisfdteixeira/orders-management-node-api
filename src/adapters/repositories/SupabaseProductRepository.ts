@@ -17,6 +17,7 @@ export class SupabaseProductRepository implements IProductRepository {
       description: row.description || undefined,
       price: Number(row.price),
       stock: row.stock,
+      category_id: row.category_id,
       image_url: row.image_url || undefined,
       is_active: row.is_active || false,
       created_at: new Date(row.created_at || new Date()),
@@ -54,10 +55,10 @@ export class SupabaseProductRepository implements IProductRepository {
       description: data.description || null,
       price: data.price,
       stock: data.stock,
+      category_id: data.category_id,
       image_url: data.image_url || null,
       is_active: data.is_active ?? true,
     };
-
 
     console.log('Inserting product into the database')
     const { data: created, error } = await this.supabaseClient
