@@ -7,7 +7,6 @@
   <img src="https://img.shields.io/badge/Firebase-Admin%20SDK-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase">
   <img src="https://img.shields.io/badge/Supabase-3.x-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
   <img src="https://img.shields.io/badge/ImgBB-API-FF6B6B?style=for-the-badge&logo=imgbb&logoColor=white" alt="ImgBB">
-  <img src="https://img.shields.io/badge/Architecture-Hexagonal-8A2BE2?style=for-the-badge" alt="Hexagonal Architecture">
 </p>
 
 ## About
